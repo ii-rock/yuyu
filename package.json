@@ -9,7 +9,7 @@
   "dependencies": {
     "callback": "0.0.1",
     "cleverbot-api": "^1.0.3",
-    "cleverbot-node": "^0.3.11",
+    "cleverbot-node": "0.3.11",
     "cleverbot.io": "1.0.4",
     "discord.js": "^11.3.0",
     "download": "^6.2.5",
