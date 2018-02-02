@@ -81,14 +81,14 @@ bot.on("ready", function() {
     console.log("The bot is online and ready to be used");
     bot.channels.get("376024273522786307").sendMessage("Connected to hack servers and discord servers.")
     bot.user.setActivity("How To Hack", {type: "WATCHING"})
-    
+    bot.user.setUsername("Annonymous");
     setInterval(function() {
 
         upSecs = upSecs + 1
         if (upSecs >= 60) {
             var userdisplay = states[Math.floor(Math.random() * states.length)];
             bot.user.setActivity(userdisplay, {type: "WATCHING"})
-            bot.setUsername("Annonymous");
+            
             upSecs = 0
             upMins = upMins + 1
         }
