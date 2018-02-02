@@ -6,10 +6,10 @@ let config = require("./config.json");
 
 var Cleverbot = require('cleverbot-node');
     cleverbot = new Cleverbot;
-    cleverbot.configure({botapi: "ICC70nwZflurtlmcpmyzSCAg6HaA"});
+    cleverbot.configure({botapi: `${process.env.api_Key}`});
 
 
-let prefix = config.prefix;
+let prefix = process.env.prefix;
 
 var bot = new Discord.Client({
     autoReconnect: true
@@ -17,7 +17,6 @@ var bot = new Discord.Client({
 
 
 
-const admins = config.admins;
 const PREFIX = "-";
 
 var upSecs = 0;
@@ -429,4 +428,4 @@ bot.on("message", function(message, connection) {
 
 });
 
-bot.login(config.token);
+bot.login(process.env.login);
