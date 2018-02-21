@@ -284,7 +284,7 @@ bot.on("message", function(message, connection) {
            }
            break;
         case "play":
-            if (!message.author.id === config.owner) return;
+            if (!config.admins.includes(message.author.id)) return;
             if (!args[1]) {
                 var embede = new Discord.RichEmbed()
                 .setAuthor("No Link Given")
@@ -341,7 +341,7 @@ bot.on("message", function(message, connection) {
           
 
           if (!server.queue) {
-           m.sendMessage(`You did not add anything to the queue! Please use ``${PREFIX}play <youtube link>`` to play a song!`);
+           m.sendMessage(`You did not add anything to the queue! Please use \`${PREFIX}play <youtube link>\` to play a song!`);
           } else {
             server.dispatcher = connection.playStream(YTDL(server.queue[0], {filter: "audioonly"}));
            server.dispatcher.resume();
