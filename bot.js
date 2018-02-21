@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const YTDL = require("ytdl-core");
 const ms = require('ms');
 const fs = require("fs");
-cosnt config = require('./config.json')
+const config = require('./config.json')
 
 var Cleverbot = require('cleverbot-node');
     cleverbot = new Cleverbot;
