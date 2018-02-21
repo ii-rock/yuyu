@@ -75,13 +75,11 @@ var eightBall = [
 
 var servers = {};
 
-states = ["Music", "YouTube", `${PREFIX}help`];
+states = ["Music", "Spotify", `${PREFIX}help`];
 
 bot.on("ready", function() {
     console.log("The bot is online and ready to be used");
-    bot.channels.get("376024273522786307").sendMessage("Connected to hack servers and discord servers.")
-    bot.user.setActivity("How To Hack", {type: "WATCHING"})
-    bot.user.setUsername("Annonymous");
+    bot.user.setActivity("Spotify", {type: "LISTENING"})
     setInterval(function() {
 
         upSecs = upSecs + 1
