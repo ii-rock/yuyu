@@ -39,7 +39,7 @@ function play(connection, message) {
         else connection.disconnect()
             var embed = new Discord.RichEmbed()
                 .setAuthor("Queue Finished")
-                .setDescription(`The queue has finished, feel free to use the ``${PREFIX}play`` command to play more songs!`)
+                .setDescription(`The queue has finished, feel free to use the \`${PREFIX}play\` command to play more songs!`)
                 .setThumbnail(bot.user.displayAvatarURL)
                 .setColor("#FF0000")
                 .setTimestamp()
