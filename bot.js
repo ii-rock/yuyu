@@ -30,7 +30,7 @@ function play(connection, message) {
 
     server.dispatcher = connection.playStream(YTDL(server.queue[0], {filter: "audioonly"}));
 
-       message.channel.sendMessage(`Now playing a song in **${message.member.voiceChannel.name}**`);
+       var playMsg = message.channel.sendMessage(`Now playing a song in **${message.member.voiceChannel.name}**`);
 
     server.queue.shift();
 
@@ -44,7 +44,7 @@ function play(connection, message) {
                 .setColor("#FF0000")
                 .setTimestamp()
             message.channel.sendEmbed(embed);
-        
+            playMsg.delete();
     });
 }
 
@@ -85,7 +85,7 @@ bot.on("ready", function() {
         upSecs = upSecs + 1
         if (upSecs >= 60) {
             var userdisplay = states[Math.floor(Math.random() * states.length)];
-            bot.user.setActivity(userdisplay, {type: "WATCHING"})
+            bot.user.setActivity(userdisplay, {type: "LISTENING"})
             
             upSecs = 0
             upMins = upMins + 1
