@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const YTDL = require("ytdl-core");
 const ms = require('ms');
 const fs = require("fs");
+cosnt config = require('./config.json')
 
 var Cleverbot = require('cleverbot-node');
     cleverbot = new Cleverbot;
@@ -15,8 +16,7 @@ var bot = new Discord.Client({
 });
 
 
-
-const PREFIX = "-";
+const PREFIX = "d!";
 
 var upSecs = 0;
 var upMins = 0;
@@ -75,7 +75,7 @@ var eightBall = [
 
 var servers = {};
 
-states = ["Annonymous", "Life Hacks", "Hacks", "Professional Hackers", `Whisper me for hacks`];
+states = ["Music", "YouTube", `${PREFIX}help`];
 
 bot.on("ready", function() {
     console.log("The bot is online and ready to be used");
@@ -109,13 +109,10 @@ bot.on("ready", function() {
 
 
 bot.on("message", function(message, connection) {
+    if (!message.content.startsWith(PREFIX)) return;
+    if (!message.guild) return;
     if (!message.author.equals(bot.user)) 
 
-    if (!message.guild) {
-    	cleverbot.write(message.content, function (response) {
-       message.reply(response.output)
-    });
-    }
     
     var mentioned = message.mentions.users.first()
     var m = message.channel
@@ -127,10 +124,12 @@ bot.on("message", function(message, connection) {
 
     if (message.author.equals(bot.user)) return;
     
-    if (!message.content.startsWith(PREFIX)) return;
+    
     console.log(`${message.author.username}#${message.author.discriminator}: ${message.content}`)
-    bot.channels.get("405872224806109185").sendMessage(`${message.author.username}#${message.author.discriminator}: ${message.content}`);
-
+    
+   
+    var WholeMsg = message.content.split(" ").slice(1)
+    var theMsg = WholeMsg.join(" ")
     var args = message.content.substring(PREFIX.length).split(" ");
 
     switch (args[0].toLowerCase()) {
@@ -164,8 +163,7 @@ bot.on("message", function(message, connection) {
                 .setAuthor("Commands")
                 .setDescription(`${PREFIX}userinfo - shows a few information about the mentioned user.\n${PREFIX}8ball - ask a question and the bot will reply with a random answer.\n${PREFIX}serverinfo - shows a few information about the current guild.`)
                 .addField("Music", `${PREFIX}play <youtube link> - plays a song from youtube in your current voice channel.\n${PREFIX}stop - stops the player and leaves your current channel.\n${PREFIX}skip - skips your current song.`)
-                .addField("Direct Messaging (Private)", `You can talk with the bot and it will reply to you asap!\nExample: Hey\n${bot.user.username}: Hey, how are you?`)
-                .addField("About Bot", `${PREFIX}ping - shows the time taken for the bot to respond.\n${PREFIX}uptime - shows the time since the bot has started up.\n${PREFIX}servers - shows the servers count that the bot has joined.\n${PREFIX}about - shows information about the bot's owner and the library used to create the bot.\n${PREFIX}invite - sends my invitation link.\n${PREFIX}reportbug - report a bug and it will be sent to the owner.`)
+                .addField("About Bot", `${PREFIX}ping - shows the time taken for the bot to respond.\n${PREFIX}uptime - shows the time since the bot has started up.\n${PREFIX}servers - shows the servers count that the bot has joined.\n${PREFIX}invite - sends my invitation link.`)
                 .setColor("#3C51C3")
                 .setFooter("We will keep adding more features and commands!")
             message.channel.sendEmbed(embeed);
@@ -188,28 +186,6 @@ bot.on("message", function(message, connection) {
                 m.reply("You can't use this command in private messages.")
             }
      break;
-        case "reportbug":
-            var embeed = new Discord.RichEmbed()
-                .setAuthor("Bug Reported")
-                .setDescription("Your report has been submitted and sent to the owner.")
-                .addField("Report Message", `${message.content.split(args[0])}`)
-                .setColor("#C94830")
-                .setTimestamp()
-            message.channel.sendEmbed(embeed);
-            bot.channels.get("406182116712513537").send(`${author.username}#${author.discriminator} reported: \n${message.content.split(args[0])}`);
-            break;
-         case "about":
-            var owner = bot.users.get(`${config.owner}`).username + "#" + bot.users.get(`${config.owner}`).discriminator
-            var embeed = new Discord.RichEmbed()
-                .setAuthor("My Creator")
-                .setDescription(owner)
-                .addField("Library Used", "Discord.js")
-                .setColor("#C94830")
-                .setTimestamp()
-            message.channel.sendEmbed(embeed);
-               
-            break;
-
          case "setavatar":
            if (!args[1]) {
             m.sendMessage("The avatar cannot be empty!");
@@ -225,73 +201,38 @@ bot.on("message", function(message, connection) {
            }
         break;
         case "setname":
-           if (!args[1]) {
+           if (!theMsg) {
             m.sendMessage("The username cannot be empty!");
            } else {
-            bot.user.setUsername(args[1]);
-            m.sendMessage(`My name has been successfully changed to **${args[1]}**`)
-           }
-           break;
-        case "userinfo":
-           if (!message.mentions.users.first()) {
-            var embeed = new Discord.RichEmbed()
-                .setAuthor("Your Information")
-                .setDescription(`Here is your account information`)
-                .addField("User ID", message.author.id)
-                .addField("User Registeration Date", message.author.createdAt)
-                .setThumbnail(message.author.avatarURL)
-                .setColor("#C94830")
-                .setTimestamp()
-            message.channel.sendEmbed(embeed);
-           } else if (!message.guild) {
-               m.reply("You can't use this command in private messages.")
-           } else if (mentioned === message.author) {
-            var embeed = new Discord.RichEmbed()
-                .setAuthor("Your Information")
-                .setDescription(`Here is your account information`)
-                .addField("User ID", message.author.id)
-                .addField("User Registeration Date", message.author.createdAt)
-                .setColor("#C94830")
-                .setThumbnail(message.author.avatarURL)
-                .setTimestamp()
-            message.channel.sendEmbed(embeed);
-        } else {
-            var embeed = new Discord.RichEmbed()
-                .setAuthor(mentioned.username + "#" + mentioned.discriminator + "'s Information")
-                .setDescription(`Here is ${mentioned.username}#${mentioned.discriminator}'s information`)
-                .addField("User ID", message.mentions.users.first().id)
-                .addField("User Registeration Date", mentioned.createdAt)
-                .setColor("#C94830")
-                .setThumbnail(mentioned.avatarURL)
-                .setTimestamp()
-            message.channel.sendEmbed(embeed);
+            bot.user.setUsername(theMsg);
+            m.sendMessage(`My name has been successfully changed to **${theMsg}**`)
            }
            break;
         case "watch":
         var embeed = new Discord.RichEmbed()
                 .setAuthor("State Changed")
-                .setDescription(`Now watching ${args}`)
+                .setDescription(`Now watching ${theMsg}`)
                 .setColor("#C94830")
                 .setTimestamp()
             message.channel.sendEmbed(embeed);
            
-        bot.user.setActivity(args[1], {type: "WATCHING"});
+        bot.user.setActivity(theMsg, {type: "WATCHING"});
         break;
         case "stream":
         if (config.admins.includes(message.author.id)) {
         let embed = new Discord.RichEmbed()
             .setAuthor("State Changed")
-            .setDescription(`Now streaming ${args[1]}!`)
+            .setDescription(`Now streaming ${theMsg}!`)
             .setColor("#51317B")
             .setTimestamp()
 
             message.channel.sendEmbed(embed);
-            bot.user.setGame(`${args[1]}`, `${TWITCH}`);
+            bot.user.setGame(`${theMsg}`, `${TWITCH}`);
             } else {
             message.channel.sendMessage("You do not have permissions to perform this action.")
            }
             break;
-        case "close":
+        case "end":
         if (config.admins.includes(message.author.id)) {
         let embeds = new Discord.RichEmbed()
             .setAuthor("Logging Out")
@@ -332,7 +273,7 @@ bot.on("message", function(message, connection) {
             message.channel.sendEmbed(embedg);
             break;
         case "8ball":
-            if (args[1]) message.channel.sendMessage(eightBall[Math.floor(Math.random() * eightBall.length)]);
+            if (theMsg) message.channel.sendMessage(eightBall[Math.floor(Math.random() * eightBall.length)]);
             else message.channel.sendMessage("Can't read that");
             break;
         case "restart":
