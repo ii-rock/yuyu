@@ -155,7 +155,7 @@ bot.on("message", function(message, connection) {
         case "help":
            var embeed = new Discord.RichEmbed()
                 .setAuthor("Commands")
-                .setDescription(`${PREFIX}userinfo - shows a few information about the mentioned user.\n${PREFIX}8ball - ask a question and the bot will reply with a random answer.\n${PREFIX}serverinfo - shows a few information about the current guild.`)
+                .setDescription(`${PREFIX}userinfo - shows a few information about the mentioned user.\n${PREFIX}8ball - ask a question and the bot will reply with a random answer.`)
                 .addField("Music", `${PREFIX}play <youtube link> - plays a song from youtube in your current voice channel.\n${PREFIX}stop - stops the player and leaves your current channel.\n${PREFIX}skip - skips your current song.`)
                 .addField("About Bot", `${PREFIX}ping - shows the time taken for the bot to respond.\n${PREFIX}uptime - shows the time since the bot has started up.\n${PREFIX}servers - shows the servers count that the bot has joined.\n${PREFIX}invite - sends my invitation link.`)
                 .setColor("#3C51C3")
