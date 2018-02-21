@@ -118,10 +118,6 @@ bot.on("message", function(message, connection) {
     var m = message.channel
     var author = message.author
 
-    let messageArray = message.content.split(" ");
-    let cmd = messageArray[0];
-    let theMsg = messageArray.slice(1);
-
     if (message.author.equals(bot.user)) return;
     
     
